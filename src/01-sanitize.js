@@ -28,6 +28,16 @@ const SENALES_DE_RIESGO = [
   /sos\s+ahora/i,
   /system\s*prompt/i,
   /actua\s+como/i,
+  // Nuevo — mismo intento de override, verbo distinto ("no sigas/obedezcas"
+  // en vez de "ignorá"): un atacante que sepa que "ignorá" está bloqueado
+  // prueba sinónimos, así que el guardrail tiene que cubrir la INTENCIÓN
+  // (desobedecer instrucciones) y no una sola forma de decirla.
+  /no\s+(sigas|obedezcas).{0,20}instruccion/i,
+  // Nuevo — mismo patrón que "ignor[ae]...instruccion" pero en inglés: un
+  // texto fuente en español puede igual traer un intento de injection en
+  // inglés pegado adentro (ej. un email o documento mixto). Cubrir un solo
+  // idioma deja un agujero real, no hipotético.
+  /ignore\s+(the\s+)?(previous|above|prior)\s+instructions?/i,
 ];
 
 function quitarTildes(texto) {
