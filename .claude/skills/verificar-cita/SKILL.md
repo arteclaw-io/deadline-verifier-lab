@@ -20,20 +20,38 @@ chequeo puntual dentro de una sesión de Claude Code, sin tener que correr
 
 ## Cómo verificar
 
-1. **Grounding de la cita** — el fragmento citado tiene que existir
-   TEXTUALMENTE (comparación literal, no parafraseada) dentro del texto
-   fuente completo. Si no aparece tal cual, la cita es falsa aunque
-   "suene" coherente con el resto — no uses juicio semántico acá, es una
-   comprobación de substring exacto (ver `verificarGrounding` en
-   `src/04-verify.js` de este repo para la implementación de referencia).
-2. **Validez de la fecha** — la fecha resultante tiene que ser una fecha
-   real (parseable) y posterior o igual a la fecha de referencia dada
-   (no la fecha real del sistema, salvo que se indique lo contrario
-   explícitamente — ver el bug real documentado en el historial de commits
-   de este repo sobre por qué la fecha de referencia no puede ser
-   `new Date()` a ciegas).
-3. Si CUALQUIERA de los dos chequeos falla, la conclusión completa es
-   "NO CONFIABLE" — no hay términos medios ni "confiable con reservas".
+**Preferí SIEMPRE ejecutar el código real en vez de comparar los textos
+vos mismo.** Si estás en una sesión de Claude Code con este repo
+disponible, corré algo como:
+
+```bash
+node -e '
+import("./src/04-verify.js").then(({ verificarGrounding, verificarFecha }) => {
+  const g = verificarGrounding("TEXTO FUENTE COMPLETO ACÁ", "FRAGMENTO CITADO ACÁ");
+  const f = verificarFecha("YYYY-MM-DD o null", new Date("FECHA DE REFERENCIA YYYY-MM-DD"));
+  console.log(JSON.stringify({ g, f }, null, 2));
+});
+'
+```
+
+Esto usa la comparación de substring exacto real (`verificarGrounding`) y
+la validación de fecha real (`verificarFecha`) del código del lab — nada
+de "me parece que sí coincide". Solo si no podés ejecutar código, aplicá
+el criterio de reserva de abajo y aclará que es una aproximación:
+
+*Criterio de reserva (sin ejecutar código):*
+1. **Grounding** — el fragmento citado tiene que existir TEXTUALMENTE
+   (no parafraseado) dentro del texto fuente completo. Si no aparece tal
+   cual, la cita es falsa aunque "suene" coherente con el resto.
+2. **Fecha** — tiene que ser una fecha real (parseable) y posterior o
+   igual a la fecha de referencia dada (no la fecha real del sistema,
+   salvo que se indique lo contrario explícitamente — ver el bug real
+   documentado en el historial de commits de este repo sobre por qué la
+   fecha de referencia no puede ser `new Date()` a ciegas).
+
+Con cualquiera de las dos vías: si CUALQUIERA de los dos chequeos falla,
+la conclusión completa es "NO CONFIABLE" — no hay términos medios ni
+"confiable con reservas".
 
 ## Output esperado
 
