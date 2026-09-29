@@ -99,9 +99,8 @@ buscá `deadline-verifier-lab`. Ahora sí va a aparecer — porque ya es tuyo:
 ![Buscando el repo, ahora aparece tu fork](images/06-buscar-fork.jpg)
 
 Seleccionalo. Vas a ver el nombre del repo y la branch (`master`) como
-chips en la parte de abajo de la pantalla, confirmando que quedó elegido:
-
-![Repo y branch seleccionados como chips](images/07-repo-seleccionado.jpg)
+chips en la parte de abajo de la pantalla, confirmando que quedó elegido
+(lo vas a ver junto con el chat en el próximo paso).
 
 ---
 
